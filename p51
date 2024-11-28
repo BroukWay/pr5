@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> fullName = new List<string>();
+
+        Console.WriteLine("Введите своё ФИО (например, Умников Аркадий Андреевич): ");
+        fullName = Console.ReadLine().Split(' ').ToList();
+
+        if (fullName.Count != 3)
+        {
+            Console.WriteLine("ФИО должно состоять из трех частей: фамилия, имя, отчество.");
+            return;
+        }
+
+        while (true)
+        {
+            Console.WriteLine("\nВыберите операцию:");
+            Console.WriteLine("1) Вытащить фамилию, имя или отчество отдельно.");
+            Console.WriteLine("2) Отсортировать фамилию по возрастанию или убыванию.");
+            Console.WriteLine("3) Изменить своё имя, фамилию или отчество.");
+            Console.WriteLine("4) Вывести ФИО в обратном порядке.");
+            Console.WriteLine("5) Перевернуть все буквы в ФИО.");
+            Console.WriteLine("0) Выйти из программы.");
+
+            Console.Write("Введите номер операции: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Выберите часть для извлечения: 1 - Фамилия, 2 - Имя, 3 - Отчество");
+                    int part = int.Parse(Console.ReadLine());
+                    if (part >= 1 && part <= 3)
+                        Console.WriteLine("Результат: " + fullName[part - 1]);
+                    else
+                        Console.WriteLine("Неверный выбор.");
+                    break;
+
+                case 2:
+                    Console.WriteLine("1 - По возрастанию, 2 - По убыванию");
+                    int orderChoice = int.Parse(Console.ReadLine());
+                    string sortedSurname = orderChoice == 1
+                        ? string.Concat(fullName[0].OrderBy(c => c))
+                        : string.Concat(fullName[0].OrderByDescending(c => c));
+                    Console.WriteLine("Отсортированная фамилия: " + sortedSurname);
+                    break;
+
+                case 3:
+                    Console.WriteLine("Выберите часть для изменения: 1 - Фамилия, 2 - Имя, 3 - Отчество");
+                    int editChoice = int.Parse(Console.ReadLine());
+                    if (editChoice >= 1 && editChoice <= 3)
+                    {
+                        Console.Write("Введите новое значение: ");
+                        fullName[editChoice - 1] = Console.ReadLine();
+                        Console.WriteLine("ФИО успешно обновлено.");
+                    }
+                    else
+                        Console.WriteLine("Неверный выбор.");
+                    break;
+
+                case 4:
+                    Console.WriteLine("ФИО в обратном порядке: " + string.Join(" ", fullName.AsEnumerable().Reverse()));
+                    break;
+
+                case 5:
+                    List<string> reversedFullName = fullName.Select(s => new string(s.Reverse().ToArray())).ToList();
+                    Console.WriteLine("ФИО с перевёрнутыми буквами: " + string.Join(" ", reversedFullName));
+                    break;
+
+                case 0:
+                    Console.WriteLine("Выход из программы.");
+                    return;
+
+                default:
+                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
+                    break;
+            }
+        }
+    }
+}
